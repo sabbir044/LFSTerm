@@ -1,0 +1,13 @@
+#xml {
+    float: left;
+    width: 50%;
+    height: 97vh;
+}
+
+#xterm {
+    margin-left: 50%;
+    width: 50%;
+    height: 97vh;
+    position: fixed;
+}
+
