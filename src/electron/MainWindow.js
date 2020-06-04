@@ -16,7 +16,7 @@ class MainWindow {
     //this.lfsView.webContents.loadFile(__dirname + '/../view/page.html')
     //this.termView.webContents.loadFile(__dirname + '/../view/index.html')
     // Open the DevTools.
-    //this.win.webContents.openDevTools()
+    this.win.webContents.openDevTools({mode:'detach'})
   }
 }
 

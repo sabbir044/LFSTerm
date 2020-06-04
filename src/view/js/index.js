@@ -28,6 +28,19 @@ window.addEventListener("resize", function () {
   fit.fit()
 });
 
+let links = document.getElementsByTagName("a")
+for (let i=0;i<links.length;i++) {
+  let link = links[i]
+  let href = link.getAttribute("href")
+  if (href != null && href.startsWith("http://www.linuxfromscratch.org/lfs/downloads/9.1/LFS-BOOK-9.1-NOCHUNKS.html")) {
+    let splits = href.split("#")
+    if (splits.length === 2) {
+      link.setAttribute("href","#"+splits[1])
+    }
+  }
+}
+
+
 Prism.plugins.toolbar.registerButton('hello-world', {
   text: 'Run in Terminal', // required
   onClick: function (env) { // optional
