@@ -40,6 +40,27 @@ for (let i=0;i<links.length;i++) {
   }
 }
 
+let codeParents = document.getElementsByClassName("userinput")
+for (let i=0;i<codeParents.length;i++) {
+  let codeParent = codeParents[i]
+  if (codeParent.childElementCount > 1) {
+    console.log("This parent has multiple child")
+    console.log(codeParent.outerHTML)
+    continue
+  }
+  codeParent.classList.add("language-bash")
+  if (codeParent.firstChild.tagName !== "KBD") {
+    console.log("This parent has different child")
+    console.log(codeParent.outerHTML)
+    continue
+  }
+  let kbdChild = codeParent.firstChild
+  let codeChild = document.createElement('code');
+  codeChild.innerHTML = kbdChild.innerHTML;
+
+  codeParent.replaceChild(codeChild, kbdChild);
+}
+
 
 Prism.plugins.toolbar.registerButton('hello-world', {
   text: 'Run in Terminal', // required
