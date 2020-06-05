@@ -17,6 +17,7 @@ const fit = new FitAddon()
 xterm.loadAddon(fit)
 xterm.open(document.getElementById('xterm'))
 fit.fit()
+ptyProcess.resize(xterm.cols, xterm.rows)
 // Setup communication between xterm.js and node-pty
 xterm.onData(data => ptyProcess.write(data))
 ptyProcess.onData(function (data) {
@@ -26,6 +27,7 @@ ptyProcess.onData(function (data) {
 window.addEventListener("resize", function () {
   console.log("hello")
   fit.fit()
+  ptyProcess.resize(xterm.cols, xterm.rows)
 });
 
 let links = document.getElementsByTagName("a")
@@ -40,25 +42,37 @@ for (let i=0;i<links.length;i++) {
   }
 }
 
-let codeParents = document.getElementsByClassName("userinput")
-for (let i=0;i<codeParents.length;i++) {
-  let codeParent = codeParents[i]
-  if (codeParent.childElementCount > 1) {
-    console.log("This parent has multiple child")
-    console.log(codeParent.outerHTML)
-    continue
-  }
-  codeParent.classList.add("language-bash")
-  if (codeParent.firstChild.tagName !== "KBD") {
-    console.log("This parent has different child")
-    console.log(codeParent.outerHTML)
-    continue
-  }
-  let kbdChild = codeParent.firstChild
+function convertKbdChildren(codeParent, kbdChild) {
   let codeChild = document.createElement('code');
   codeChild.innerHTML = kbdChild.innerHTML;
 
   codeParent.replaceChild(codeChild, kbdChild);
+}
+
+let codeParents = document.getElementsByClassName("userinput")
+for (let i=0;i<codeParents.length;i++) {
+  let codeParent = codeParents[i]
+  codeParent.classList.add("language-bash")
+  if (codeParent.childElementCount > 1) {
+    console.log("This parent has multiple child")
+    console.log(codeParent.outerHTML)
+    let code = ""
+    for(let j=0;j<codeParent.children.length;j++) {
+      code = code + codeParent.children[j].innerHTML
+    }
+    let codeChild = document.createElement('code');
+    codeChild.innerHTML = code;
+    codeParent.innerHTML = ""
+    codeParent.appendChild(codeChild)
+  } else {
+    if (codeParent.firstChild.tagName !== "KBD") {
+      console.log("This parent has different child")
+      console.log(codeParent.outerHTML)
+      continue
+    }
+    let kbdChild = codeParent.firstChild
+    convertKbdChildren(codeParent, kbdChild)
+  }
 }
 
 
