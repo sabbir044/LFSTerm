@@ -177,18 +177,27 @@ wraps.forEach(function (wrap) {
   let titlePage = wrap.querySelector(".titlepage")
   let instl = wrap.querySelector(".installation")
   let title = titlePage.querySelector(".title").innerText
-  if (title.startsWith("5")) {
+  if (title.startsWith("5") || title.startsWith("6")) {
     //console.log(title)
     let pkgName = title.split(/\u00A0/g)[1].split(" ")[0]
+    pkgName = pkgName.split(/-d+/)[0]
+    if (pkgName === "Libstdc++") {
+      pkgName = "GCC"
+    }
+    if (pkgName === "Libelf") {
+      pkgName = "Elfutils"
+    }
     console.log(pkgName)
     let tarPkgName = null
-
     packages.forEach(function (pkg) {
       if(pkg.endsWith(".patch"))
         return
-      let pkkg = pkg.replace("-","")
-      let pName = pkgName.replace("-","")
-      if(pkkg.includes(pName.toLowerCase())) {
+      let pkkg = pkg.replace(/-/g,"").replace("::","").toLowerCase()
+      let pName = pkgName.replace(/-/g,"").replace("::","").toLowerCase()
+      if(pkkg.includes(pName)) {
+        if (pkg.startsWith("python") && pkg.includes("doc")) {
+          return
+        }
         console.log("Found:   "+pkg)
         if (tarPkgName == null) {
           tarPkgName = pkg
@@ -198,15 +207,14 @@ wraps.forEach(function (wrap) {
       }
     })
     if (tarPkgName != null) {
-      let tarPkgNameWOtar = tarPkgName.split(".tar")[0]
       let newFirstElement = document.createElement("pre")
       newFirstElement.classList.add("userinput", "language-bash")
-      newFirstElement.innerHTML = "<code>tar xvf " + tarPkgName + " && cd " + tarPkgNameWOtar + " </code>"
+      newFirstElement.innerHTML = "<code>tar xvf " + tarPkgName + " --one-top-level=extract_files && cd extract_file </code>"
       instl.insertBefore(newFirstElement, instl.firstChild);
 
       let newLastElement = document.createElement("pre")
       newLastElement.classList.add("userinput", "language-bash")
-      newLastElement.innerHTML = "<code>cd $LFS/sources/  && rm -rf " + tarPkgNameWOtar + " </code>"
+      newLastElement.innerHTML = "<code>cd $LFS/sources/  && rm -rf extract_files </code>"
       instl.appendChild(newLastElement);
     } else {
       console.log("Not found for package: "+pkgName)
