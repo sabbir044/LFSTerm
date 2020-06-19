@@ -1,7 +1,7 @@
-var os = require('os')
-var pty = require('node-pty')
-var Terminal = require('xterm').Terminal
-var { FitAddon } = require('xterm-addon-fit')
+const os = require('os')
+const pty = require('node-pty')
+const Terminal = require('xterm').Terminal
+const { FitAddon } = require('xterm-addon-fit')
 
 // Initialize node-pty with an appropriate shell
 const shell = process.env[os.platform() === 'win32' ? 'COMSPEC' : 'SHELL']
@@ -209,12 +209,12 @@ wraps.forEach(function (wrap) {
     if (tarPkgName != null) {
       let newFirstElement = document.createElement("pre")
       newFirstElement.classList.add("userinput", "language-bash")
-      newFirstElement.innerHTML = "<code>tar xvf " + tarPkgName + " --one-top-level=extract_files && cd extract_file </code>"
+      newFirstElement.innerHTML = "<code>tar xvf " + tarPkgName + " --one-top-level=extracted_files --strip-components 1 && cd extracted_files </code>"
       instl.insertBefore(newFirstElement, instl.firstChild);
 
       let newLastElement = document.createElement("pre")
       newLastElement.classList.add("userinput", "language-bash")
-      newLastElement.innerHTML = "<code>cd $LFS/sources/  && rm -rf extract_files </code>"
+      newLastElement.innerHTML = "<code>cd $LFS/sources/  && rm -rf extracted_files </code>"
       instl.appendChild(newLastElement);
     } else {
       console.log("Not found for package: "+pkgName)

@@ -1,13 +1,33 @@
 const MainWindow = require('./electron/MainWindow')
-const { app, BrowserWindow } = require('electron')
+const { Menu, app, BrowserWindow, shell } = require('electron')
+const defaultMenu = require('electron-default-menu')
 // require('electron-reload')(__dirname);
 let mainWindow
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
-app.whenReady().then(function () {
-   mainWindow = new MainWindow();
-   mainWindow.loadView();
+app.whenReady().then(function (){
+  mainWindow = new MainWindow();
+  mainWindow.loadView();
+
+  /*
+  const menu = defaultMenu(app, shell)
+  // Add custom menu
+  menu.splice(4, 0, {
+    label: 'Navigation',
+    submenu: [
+      {
+        label: 'Go Back',
+        click: (item, focusedWindow) => {
+          mainWindow.goBack()
+        }
+      }
+    ]
+  })
+
+  Menu.setApplicationMenu(Menu.buildFromTemplate(menu))
+
+   */
 })
 
 // Quit when all windows are closed.

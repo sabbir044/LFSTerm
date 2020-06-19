@@ -873,6 +873,11 @@ ecc-jsbn@~0.1.1:
     jsbn "~0.1.0"
     safer-buffer "^2.1.0"
 
+electron-default-menu@^1.0.1:
+  version "1.0.1"
+  resolved "https://unpm.uberinternal.com/electron-default-menu/-/electron-default-menu-1.0.1.tgz#3173c5018eb507404fec63bdf3b78c38eedba808"
+  integrity sha1-MXPFAY61B0BP7GO987eMOO7bqAg=
+
 electron-rebuild@^1.10.1:
   version "1.10.1"
   resolved "https://unpm.uberinternal.com/electron-rebuild/-/electron-rebuild-1.10.1.tgz#f5cb911586e703fe78e2a0e9f644e7a76f137d97"
